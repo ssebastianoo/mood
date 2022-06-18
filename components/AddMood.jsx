@@ -1,14 +1,9 @@
-import { db, getMoods, addMood } from "../firebase";
-import {
-    doc,
-    setDoc,
-    Timestamp,
-} from "firebase/firestore";
+import { getMoods, addMood } from "../utils";
+import { Timestamp } from "firebase/firestore";
 import { useState } from "react";
 import Loading from "./Loading";
-import { format } from '../utils';
 
-export default function AddMood({ moods, setMoods, uid }) {
+export default function AddMood({ setMoods, uid }) {
     const moodLevels = ["Happy3", "Happy2", "Happy1", "Sad1", "Sad2", "Sad3"];
     const [selectedMood, setSelectedMood] = useState(null);
     const [reason, setReason] = useState(null);
@@ -31,19 +26,8 @@ export default function AddMood({ moods, setMoods, uid }) {
         document.getElementById("reason").value = "";
         setLoading(true);
 
-        const moodsList = [];
-        const docs = await getMoods(uid);
-        docs.forEach((data) => {
-            moodsList.push({
-                timestamp: format(new Date(data.timestamp.seconds * 1000)),
-                mood: data.mood,
-                reason: data.reason,
-                uid: uid,
-            });
-        });
         await addMood(data);
-        data.timestamp = format(new Date(data.timestamp.seconds * 1000)),
-        moodsList.unshift(data);
+        const moodsList = await getMoods(uid);
         setMoods(moodsList);
         setLoading(false);
     }

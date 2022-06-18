@@ -1,27 +1,13 @@
 import { useEffect } from "react";
-import { db, getMoods } from "../firebase";
-import {
-    collection,
-    query,
-    orderBy,
-    getDocs,
-} from "firebase/firestore";
+import { getMoods } from "../utils";
 import Loading from "../components/Loading";
-import { format } from '../utils';
+import DeleteMood from "../components/DeleteMood";
 
 export default function Moods({ moods, setMoods, uid }) {
     useEffect(() => {
         async function getMoods_() {
-            const moodsList = [];
             const docs = await getMoods(uid);
-            docs.forEach(data => {
-                moodsList.push({
-                    timestamp: format(new Date(data.timestamp.seconds * 1000)),
-                    mood: data.mood,
-                    reason: data.reason,
-                });
-            });
-            setMoods(moodsList);
+            setMoods(docs);
         }
         getMoods_();
     }, []);
@@ -44,6 +30,7 @@ export default function Moods({ moods, setMoods, uid }) {
                     <p>{mood.timestamp}</p>
                     <h3>{mood.mood}</h3>
                     <p>{mood.reason}</p>
+                    <DeleteMood id={mood.id} moods={moods} setMoods={setMoods} />
                 </div>
             ))}
         </div>
