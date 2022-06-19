@@ -1,24 +1,23 @@
 import {
     GoogleAuthProvider,
     signInWithPopup,
-    signInWithCustomToken,
-    signInWithCredential,
     setPersistence,
     browserLocalPersistence,
     signOut,
 } from "firebase/auth";
-import {
-    getCookies,
-    checkCookies,
-    setCookies,
-    removeCookies,
-} from "cookies-next";
 import { auth } from "../firebase";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function Account({ uid, setUid }) {
+export default function Account({ setUid }) {
     const provider = new GoogleAuthProvider();
     const [username, setUsername] = useState(null);
+
+    useEffect(() => {
+        if (localStorage.getItem("username") && localStorage.getItem("uid")) {
+            setUsername(localStorage.getItem("username"));
+            setUid(localStorage.getItem("uid"));
+        }
+    })
 
     function googleLogin() {
         setPersistence(auth, browserLocalPersistence).then(() => {
@@ -29,9 +28,8 @@ export default function Account({ uid, setUid }) {
                     const user = result.user;
                     setUid(user.uid);
                     setUsername(user.displayName);
-                    setCookies("token", credential.idToken, {
-                        sameSite: true,
-                    });
+                    localStorage.setItem("uid", user.uid);
+                    localStorage.setItem("username", user.displayName);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -60,7 +58,7 @@ export default function Account({ uid, setUid }) {
             .then(() => {
                 setUid(null);
                 setUsername(null);
-                removeCookies("token");
+                localStorage.clear();
             })
             .catch((err) => {
                 console.log(err);

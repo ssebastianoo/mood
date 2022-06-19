@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { getMoods } from "../utils";
-import Loading from "../components/Loading";
+import Loading from "./Loading";
 import DeleteMood from "../components/DeleteMood";
+import Mood from "./Mood";
 
 export default function Moods({ moods, setMoods, uid }) {
     useEffect(() => {
@@ -23,15 +24,7 @@ export default function Moods({ moods, setMoods, uid }) {
     return (
         <div className="flex w-full justify-around flex-wrap mt-6 gap-x-2 gap-y-3">
             {moods.map((mood, index) => (
-                <div
-                    key={index}
-                    className="bg-green-400 p-2 rounded-md shadow-3xl"
-                >
-                    <p>{mood.timestamp}</p>
-                    <h3>{mood.mood}</h3>
-                    <p>{mood.reason}</p>
-                    <DeleteMood id={mood.id} moods={moods} setMoods={setMoods} />
-                </div>
+                <Mood key={index} mood={mood} moods={moods} setMoods={setMoods}/>
             ))}
         </div>
     );

@@ -26,16 +26,17 @@ function runMiddleware(req, res, fn) {
 
 async function handler(req, res) {
     await runMiddleware(req, res, cors);
-    switch (req.query.action) {
-        case "get":
+    console.log(req.method);
+    switch (req.method) {
+        case "GET":
             const moods = await getMoods(req.query.uid);
             res.json(moods);
             break;
-        case "add":
+        case "POST":
             await addMood(req.body);
             res.send({added: true})
             break;
-        case "delete":
+        case "DELETE":
             await deleteMood(req.query.id);
             res.send({added: true})
             break;

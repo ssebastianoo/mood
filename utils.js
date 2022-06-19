@@ -31,7 +31,9 @@ async function addMood(data) {
 }
 
 async function deleteMood(id) {
-    const res = await fetch('/api/db?action=delete&id=' + encodeURI(id));
+    const res = await fetch('/api/db?action=delete&id=' + encodeURI(id), {
+        method: 'DELETE',
+    });
     if (res.status !== 200) {
         return {deleted: false};
     } return {deleted: true};
