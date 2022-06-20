@@ -2,6 +2,7 @@ import { getMoods, addMood } from "../utils";
 import { Timestamp } from "firebase/firestore";
 import { useState } from "react";
 import Loading from "./Loading";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 export default function AddMood({ setMoods, uid }) {
     const moodLevels = ["Happy3", "Happy2", "Happy1", "Sad1", "Sad2", "Sad3"];
@@ -26,7 +27,12 @@ export default function AddMood({ setMoods, uid }) {
         document.getElementById("reason").value = "";
         setLoading(true);
 
-        await addMood(data);
+        const res = await addMood(data);
+        if (res.success) {
+            Notify.success("Mood updated successfully");
+        } else {
+            Notify.failure("There was an error updating the mood");
+        }
         const moodsList = await getMoods(uid);
         setMoods(moodsList);
         setLoading(false);

@@ -1,6 +1,7 @@
 import DeleteMood from "./DeleteMood";
 import { updateMood } from "../utils";
 import { useState } from "react";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 export default function Mood({ mood, moods, setMoods }) {
     const [edit, setEdit] = useState(false);
@@ -10,12 +11,18 @@ export default function Mood({ mood, moods, setMoods }) {
 
     async function save(e) {
         e.preventDefault();
-        await updateMood(mood.id, {
+        const res = await updateMood(mood.id, {
             mood: e.target.mood.value,
             reason: e.target.reason.value,
         });
         setMoodValue(e.target.mood.value);
         setEdit(false);
+
+        if (res.success) {
+            Notify.success("Mood updated successfully");
+        } else {
+            Notify.failure("There was an error updating the mood");
+        }
     }
 
     function cancel(e) {
