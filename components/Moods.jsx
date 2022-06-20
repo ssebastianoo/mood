@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { getMoods } from "../utils";
 import Loading from "./Loading";
-import DeleteMood from "../components/DeleteMood";
 import Mood from "./Mood";
 
 export default function Moods({ moods, setMoods, uid }) {

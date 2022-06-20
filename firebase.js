@@ -7,6 +7,7 @@ import {
     where,
     setDoc,
     deleteDoc,
+    updateDoc,
     doc,
     collection,
 } from "firebase/firestore";
@@ -51,4 +52,8 @@ async function deleteMood(id) {
     await deleteDoc(doc(db, "moods", id));
 }
 
-export { app, db, auth, getMoods, randomID, addMood, deleteMood };
+async function updateMood(id, data) {
+    await updateDoc(doc(db, "moods", id), data);
+}
+
+export { app, db, auth, getMoods, randomID, addMood, deleteMood, updateMood };

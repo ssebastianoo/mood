@@ -9,7 +9,7 @@ function format(inputDate) {
 }
 
 async function getMoods(uid) {
-    const res = await fetch('/api/db?action=get&uid=' + encodeURI(uid));
+    const res = await fetch('/api/db?uid=' + encodeURI(uid));
     const docs = await res.json();
     docs.map(doc => {
         doc.timestamp = format(new Date(doc.timestamp.seconds * 1000))
@@ -18,7 +18,7 @@ async function getMoods(uid) {
 }
 
 async function addMood(data) {
-    const res = await fetch('/api/db?action=add', {
+    const res = await fetch('/api/db', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -26,17 +26,30 @@ async function addMood(data) {
         body: JSON.stringify(data),
     })
     if (res.status !== 200) {
-        return {added: false};
-    } return {added: true};
+        return {success: false};
+    } return {success: true};
 }
 
 async function deleteMood(id) {
-    const res = await fetch('/api/db?action=delete&id=' + encodeURI(id), {
+    const res = await fetch('/api/db?id=' + encodeURI(id), {
         method: 'DELETE',
     });
     if (res.status !== 200) {
-        return {deleted: false};
-    } return {deleted: true};
+        return {success: false};
+    } return {success: true};
 }
 
-export { format, getMoods, addMood, deleteMood };
+async function updateMood(id, data) {
+    const res = await fetch('/api/db?id=' + encodeURI(id), {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+    if (res.status !== 200) {
+        return {success: false};
+    } return {success: true};
+}
+
+export { format, getMoods, addMood, deleteMood, updateMood };

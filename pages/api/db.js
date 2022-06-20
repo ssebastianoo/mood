@@ -1,5 +1,5 @@
 import Cors from "cors";
-import { getMoods, addMood, deleteMood } from "../../firebase";
+import { getMoods, addMood, deleteMood, updateMood } from "../../firebase";
 
 const whitelist = ["http://localhost:3000", "https://mood-rho.vercel.app"];
 const cors = Cors({
@@ -26,7 +26,6 @@ function runMiddleware(req, res, fn) {
 
 async function handler(req, res) {
     await runMiddleware(req, res, cors);
-    console.log(req.method);
     switch (req.method) {
         case "GET":
             const moods = await getMoods(req.query.uid);
@@ -34,14 +33,17 @@ async function handler(req, res) {
             break;
         case "POST":
             await addMood(req.body);
-            res.send({added: true})
+            res.send({success: true})
             break;
         case "DELETE":
             await deleteMood(req.query.id);
-            res.send({added: true})
+            res.send({success: true})
+            break;
+        case "PATCH":
+            await updateMood(req.query.id, req.body);
+            res.send({success: true})
             break;
         default:
-            console.log('iasjoiasdj')
             res.status(400).json({
                 error: "Invalid action",
             });
