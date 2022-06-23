@@ -1,6 +1,11 @@
 @use "_spinner";
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background-color: #131313;
     color: white;
@@ -29,49 +34,74 @@ body {
     width: 100vw;
     display: flex;
     justify-content: center;
+    position: relative;
+    margin-bottom: 50px;
 }
 
 .line {
     position: absolute;
     height: 100%;
     width: 1px;
-    background-color: RGBA(255,255,255,0.3);
+    background-color: RGBA(255, 255, 255, 0.3);
 }
 
 .moods {
-    margin-top: 50px;
+    margin: 50px 0;
     display: flex;
-    width: 300px;
     flex-direction: column;
     row-gap: 10px;
-    padding: 0 40px;
 
-    .mood {
+    .mood-parent {
+        width: 100vw;
         display: flex;
 
         &:nth-child(even) {
             justify-content: right;
+
+            .mood-child {
+                margin-left: 100px;
+            }
         }
 
         &:nth-child(odd) {
-            text-align: right;
+            .mood {
+                text-align: right;
+                justify-content: right;
+            }
+
+            .mood-child {
+                margin-right: 100px;
+            }
         }
 
-        .mood-title {
-            font-size: 30px;
-            margin-top: 0;
-            margin-bottom: 5px;
-            font-weight: normal;
-            letter-spacing: 1.5px;
-        }
+        .mood {
+            width: 50vw;
+            display: flex;
 
-        .timestamp {
-            font-size: 15px;
-            margin: 0;
-        }
+            p {
+                line-break: anywhere;
+            }
 
-        .reason {
-            margin-top: 0;
+            .mood-child {
+                width: 300px;
+            }
+
+            .mood-title {
+                font-size: 30px;
+                margin-top: 0;
+                margin-bottom: 5px;
+                font-weight: normal;
+                letter-spacing: 1.5px;
+            }
+
+            .timestamp {
+                font-size: 15px;
+                margin: 0;
+            }
+
+            .reason {
+                margin-top: 0;
+            }
         }
     }
 }

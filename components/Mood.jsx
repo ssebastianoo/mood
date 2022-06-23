@@ -22,7 +22,7 @@ export default function Mood({ mood }) {
         const moodCopy = { ...mood };
         moodCopy.mood = e.target.mood.value;
         moodCopy.reason = e.target.reason.value;
-        
+
         const res = await updateMood(mood.id, {
             mood: moodCopy.mood,
             reason: moodCopy.reason,
@@ -43,55 +43,55 @@ export default function Mood({ mood }) {
     }
 
     return (
-        <div className="mood">
-            {edit ? (
-                <div>
-                    <p>{mood.timestamp}</p>
-                    <form onSubmit={save}>
-                        <select
-                            name="mood"
-                            className="text-black"
-                            defaultValue={mood.mood}
-                        >
-                            {moodLevels.map((level, index) => {
-                                return (
-                                    <option key={index} value={level}>
-                                        {level}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                        <br />
-                        <input
-                            className="text-black"
-                            type="text"
-                            value={moodInputReason}
-                            placeholder={mood.reason}
-                            name="reason"
-                            onChange={(e) => {
-                                setMoodInputReason(e.target.value);
-                            }}
-                        />
-                        <br />
-                        <button>Save</button>
-                        <button onClick={cancel} className="ml-2">
-                            Cancel
+        <div className="mood-parent">
+            <div className="mood">
+                {edit ? (
+                    <div className="mood-child edit">
+                        <p>{mood.timestamp}</p>
+                        <form onSubmit={save}>
+                            <select
+                                name="mood"
+                                className="text-black"
+                                defaultValue={mood.mood}
+                            >
+                                {moodLevels.map((level, index) => {
+                                    return (
+                                        <option key={index} value={level}>
+                                            {level}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                            <br />
+                            <input
+                                className="text-black"
+                                type="text"
+                                value={moodInputReason}
+                                placeholder={mood.reason}
+                                name="reason"
+                                onChange={(e) => {
+                                    setMoodInputReason(e.target.value);
+                                }}
+                            />
+                            <br />
+                            <button>Save</button>
+                            <button onClick={cancel} className="ml-2">
+                                Cancel
+                            </button>
+                        </form>
+                    </div>
+                ) : (
+                    <div className="mood-child">
+                        <p className="timestamp">{mood.timestamp}</p>
+                        <h2 className="mood-title">{mood.mood}</h2>
+                        <p className="reason">{mood.reason}</p>
+                        <DeleteMood id={mood.id} />
+                        <button className="ml-2" onClick={showEdit}>
+                            edit
                         </button>
-                    </form>
-                </div>
-            ) : (
-                <div>
-                    <p className="timestamp">{mood.timestamp}</p>
-                    <h2 className="mood-title">{mood.mood}</h2>
-                    <p className="reason">{mood.reason}</p>
-                    <DeleteMood
-                        id={mood.id}
-                    />
-                    <button className="ml-2" onClick={showEdit}>
-                        edit
-                    </button>
-                </div>
-            )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
