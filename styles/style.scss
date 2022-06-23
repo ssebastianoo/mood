@@ -1,14 +1,16 @@
 @use "_spinner";
+@import "_variables";
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
 }
 
 body {
-    background-color: #131313;
-    color: white;
+    color: $foreground-color;
+    background-color: $background-color;
     font-family: "Inter", sans-serif;
 }
 
@@ -32,6 +34,8 @@ body {
 
 .moods-parent {
     width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden;
     display: flex;
     justify-content: center;
     position: relative;
@@ -53,6 +57,7 @@ body {
 
     .mood-parent {
         width: 100vw;
+        overflow-x: hidden;
         display: flex;
 
         &:nth-child(even) {
@@ -92,16 +97,47 @@ body {
                 margin-bottom: 5px;
                 font-weight: normal;
                 letter-spacing: 1.5px;
+                color: $tertiary-color;
             }
 
             .timestamp {
                 font-size: 15px;
                 margin: 0;
+                color: $primary-color;
+
+                .slash {
+                    color: $quaternary-color;
+                }
             }
 
             .reason {
                 margin-top: 0;
             }
+        }
+    }
+}
+
+.account {
+    display: flex;
+    flex-direction: column;
+
+    p {
+        display: inline-block;
+        margin: 0;
+    }
+
+    .item {
+        padding: 10px;
+        background-color: $purple-fading;
+    }
+
+    &:hover .item {
+        display: inline-block;
+    }
+
+    &:not(:hover) {
+        .item:not(:first-child) {
+            display: none;
         }
     }
 }

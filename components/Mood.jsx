@@ -82,13 +82,13 @@ export default function Mood({ mood }) {
                     </div>
                 ) : (
                     <div className="mood-child">
-                        <p className="timestamp">{mood.timestamp}</p>
+                        <p className="timestamp">{mood.timestamp.split(' / ')[0]} <span className="slash">/</span> {mood.timestamp.split(' / ')[1]} <span className="slash">/</span> {mood.timestamp.split(' / ')[2]}</p>
                         <h2 className="mood-title">{mood.mood}</h2>
                         <p className="reason">{mood.reason}</p>
-                        <DeleteMood id={mood.id} />
                         <button className="ml-2" onClick={showEdit}>
                             edit
                         </button>
+                        <DeleteMood id={mood.id} />
                     </div>
                 )}
             </div>
