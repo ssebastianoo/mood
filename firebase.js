@@ -33,7 +33,6 @@ function randomID() {
 async function getMoods(uid) {
     const q = query(
         collection(db, "moods"),
-        orderBy("timestamp", "desc"),
         where("uid", "==", uid)
     );
     const docs = await getDocs(q);

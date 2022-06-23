@@ -1,22 +1,34 @@
 import DeleteMood from "./DeleteMood";
 import { updateMood } from "../utils";
 import { useState } from "react";
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Notify } from "notiflix/build/notiflix-notify-aio";
+import { useDispatch } from "react-redux";
+import { editMood } from "../features/moodsSlice";
 
-export default function Mood({ mood, moods, setMoods }) {
+export default function Mood({ mood }) {
     const [edit, setEdit] = useState(false);
-    const [moodValue, setMoodValue] = useState(mood.mood);
-    const [moodReason, setMoodReason] = useState(mood.reason);
+    const [moodInputReason, setMoodInputReason] = useState(mood.reason);
     const moodLevels = ["Happy3", "Happy2", "Happy1", "Sad1", "Sad2", "Sad3"];
+    const dispatch = useDispatch();
+
+    function showEdit() {
+        setMoodInputReason(mood.reason);
+        setEdit(true);
+    }
 
     async function save(e) {
         e.preventDefault();
+
+        const moodCopy = { ...mood };
+        moodCopy.mood = e.target.mood.value;
+        moodCopy.reason = e.target.reason.value;
+        
         const res = await updateMood(mood.id, {
-            mood: e.target.mood.value,
-            reason: e.target.reason.value,
+            mood: moodCopy.mood,
+            reason: moodCopy.reason,
         });
-        setMoodValue(e.target.mood.value);
         setEdit(false);
+        dispatch(editMood(moodCopy));
 
         if (res.success) {
             Notify.success("Mood updated successfully");
@@ -28,15 +40,13 @@ export default function Mood({ mood, moods, setMoods }) {
     function cancel(e) {
         e.preventDefault();
         setEdit(false);
-        setMoodValue(mood.mood);
-        setMoodReason(mood.reason);
     }
 
     return (
-        <div className="bg-green-400 p-2 rounded-md shadow-3xl">
-            <p>{mood.timestamp}</p>
+        <div className="mood">
             {edit ? (
                 <div>
+                    <p>{mood.timestamp}</p>
                     <form onSubmit={save}>
                         <select
                             name="mood"
@@ -44,17 +54,22 @@ export default function Mood({ mood, moods, setMoods }) {
                             defaultValue={mood.mood}
                         >
                             {moodLevels.map((level, index) => {
-                                return <option key={index} value={level}>{level}</option>;
+                                return (
+                                    <option key={index} value={level}>
+                                        {level}
+                                    </option>
+                                );
                             })}
                         </select>
                         <br />
                         <input
                             className="text-black"
                             type="text"
-                            value={moodReason}
+                            value={moodInputReason}
+                            placeholder={mood.reason}
                             name="reason"
                             onChange={(e) => {
-                                setMoodReason(e.target.value);
+                                setMoodInputReason(e.target.value);
                             }}
                         />
                         <br />
@@ -66,14 +81,13 @@ export default function Mood({ mood, moods, setMoods }) {
                 </div>
             ) : (
                 <div>
-                    <h3>{moodValue}</h3>
-                    <p>{moodReason}</p>
+                    <p className="timestamp">{mood.timestamp}</p>
+                    <h2 className="mood-title">{mood.mood}</h2>
+                    <p className="reason">{mood.reason}</p>
                     <DeleteMood
                         id={mood.id}
-                        moods={moods}
-                        setMoods={setMoods}
                     />
-                    <button className="ml-2" onClick={() => setEdit(true)}>
+                    <button className="ml-2" onClick={showEdit}>
                         edit
                     </button>
                 </div>

@@ -1,11 +1,15 @@
 import { deleteMood } from '../utils';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { useDispatch } from "react-redux";
+import { removeMood } from '../features/moodsSlice';
 
-export default function DeleteMood({id, moods, setMoods}) {
+export default function DeleteMood({ id }) {
+    const dispatch = useDispatch();
+
     async function handleClick(e) {
         e.preventDefault();
         const res = await deleteMood(id);
-        setMoods(moods.filter(mood => mood.id !== id));
+        dispatch(removeMood(id));
         if (res.success) {
             Notify.success("Mood deleted successfully");
         } else {
