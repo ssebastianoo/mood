@@ -8,6 +8,22 @@ function format(inputDate) {
     return `${date} / ${month} / ${year}`;
 }
 
+function getMoodLabel(id) {
+    const labels = {
+        happy1: "Little Happy",
+        happy2: "Happy",
+        happy3: "Very Happy",
+        sad1: "Little Sad",
+        sad2: "Sad",
+        sad3: "Very Sad",
+        angry1: "Little Angry",
+        angry2: "Angry",
+        angry3: "Very Angry",
+    };
+    if (!labels[id.toLowerCase()]) return "";
+    return labels[id.toLowerCase()];
+}
+
 async function getMoods(uid) {
     const res = await fetch("/api/db?uid=" + encodeURI(uid));
     const docs = await res.json();
@@ -59,4 +75,4 @@ async function updateMood(id, data) {
     return { success: true };
 }
 
-export { format, getMoods, addMood, deleteMood, updateMood };
+export { format, getMoods, addMood, deleteMood, updateMood, getMoodLabel };

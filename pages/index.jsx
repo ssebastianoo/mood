@@ -1,14 +1,14 @@
 import AddMood from "../components/AddMood";
 import Moods from "../components/Moods";
 import Account from "../components/Account";
-import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Home() {
-    const [uid, setUid] = useState(null);
+    const uid = useSelector((state) => state.moods.uid);
 
     return (
         <div>
-            <Account uid={uid} setUid={setUid} />
+            <Account />
             {uid ? (
                 <>
                     <AddMood uid={uid} />

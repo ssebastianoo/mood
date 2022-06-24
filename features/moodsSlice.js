@@ -2,12 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     value: [],
+    uid: null,
 };
 
 export const moodsSlice = createSlice({
     name: "moods",
     initialState,
     reducers: {
+        setUid: (state, action) => {
+            state.uid = action.payload;
+        },
         setMoods: (state, action) => {
             state.value = action.payload;
         },
@@ -30,5 +34,5 @@ export const moodsSlice = createSlice({
     },
 });
 
-export const { setMoods, addMood, removeMood, editMood } = moodsSlice.actions;
+export const { setMoods, addMood, removeMood, editMood, setUid } = moodsSlice.actions;
 export default moodsSlice.reducer;

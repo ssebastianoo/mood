@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.2",
+    "chart.js": "^3.8.0",
     "cookies-next": "^2.0.4",
     "cors": "^2.8.5",
     "firebase": "^9.8.3",
     "next": "12.1.6",
     "notiflix": "^3.2.5",
     "react": "18.1.0",
+    "react-chartjs-2": "^4.2.0",
     "react-dom": "18.1.0",
     "react-redux": "^8.0.2",
     "sass": "^1.52.3"

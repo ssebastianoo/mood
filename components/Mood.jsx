@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import { useDispatch } from "react-redux";
 import { editMood } from "../features/moodsSlice";
+import { getMoodLabel } from "../utils";
 
 export default function Mood({ mood }) {
     const [edit, setEdit] = useState(false);
@@ -57,7 +58,7 @@ export default function Mood({ mood }) {
                                 {moodLevels.map((level, index) => {
                                     return (
                                         <option key={index} value={level}>
-                                            {level}
+                                            {getMoodLabel(level)}
                                         </option>
                                     );
                                 })}
@@ -83,7 +84,7 @@ export default function Mood({ mood }) {
                 ) : (
                     <div className="mood-child">
                         <p className="timestamp">{mood.timestamp.split(' / ')[0]} <span className="slash">/</span> {mood.timestamp.split(' / ')[1]} <span className="slash">/</span> {mood.timestamp.split(' / ')[2]}</p>
-                        <h2 className="mood-title">{mood.mood}</h2>
+                        <h2 className="mood-title">{getMoodLabel(mood.mood)}</h2>
                         <p className="reason">{mood.reason}</p>
                         <button className="ml-2" onClick={showEdit}>
                             edit

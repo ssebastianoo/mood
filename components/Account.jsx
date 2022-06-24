@@ -7,15 +7,18 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { useState, useEffect } from "react";
+import { setUid } from "../features/moodsSlice";
+import { useSelector, useDispatch } from "react-redux";
 
-export default function Account({ setUid }) {
+export default function Account() {
     const provider = new GoogleAuthProvider();
     const [username, setUsername] = useState(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (localStorage.getItem("username") && localStorage.getItem("uid")) {
             setUsername(localStorage.getItem("username"));
-            setUid(localStorage.getItem("uid"));
+            dispatch(setUid(localStorage.getItem("uid")));
         }
     });
 
@@ -24,7 +27,7 @@ export default function Account({ setUid }) {
             signInWithPopup(auth, provider)
                 .then((result) => {
                     const user = result.user;
-                    setUid(user.uid);
+                    dispatch(setUid(user.uid));
                     setUsername(user.displayName);
                     localStorage.setItem("uid", user.uid);
                     localStorage.setItem("username", user.displayName);
@@ -54,7 +57,7 @@ export default function Account({ setUid }) {
     function logout() {
         signOut(auth)
             .then(() => {
-                setUid(null);
+                dispatch(setUid(null));
                 setUsername(null);
                 localStorage.clear();
             })
@@ -74,8 +77,8 @@ export default function Account({ setUid }) {
                     <div className="item">
                         <p>{username}</p>
                     </div>
-                    <div className="item">
-                        <button onClick={logout}>log out</button>
+                    <div className="item" onClick={logout}>
+                        <p>log out</p>
                     </div>
                 </div>
             )}
