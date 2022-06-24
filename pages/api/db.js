@@ -1,7 +1,7 @@
 import Cors from "cors";
 import { getMoods, addMood, deleteMood, updateMood } from "../../firebase";
 
-const whitelist = ["http://localhost:3000", "https://mood-rho.vercel.app"];
+const whitelist = ["http://localhost:3000", "https://mood-rho.vercel.app", "https://mood.sebastianogirotto.me"];
 const cors = Cors({
     methods: ["GET", "HEAD"],
     origin: (origin, callback) => {
