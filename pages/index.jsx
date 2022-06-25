@@ -1,6 +1,7 @@
 import AddMood from "../components/AddMood";
 import Moods from "../components/Moods";
 import Account from "../components/Account";
+import Stats from "../components/Stats";
 import { useSelector } from "react-redux";
 
 export default function Home() {
@@ -12,7 +13,10 @@ export default function Home() {
             {uid ? (
                 <>
                     <AddMood uid={uid} />
-                    <Moods uid={uid} />
+                    <div className="sections">
+                        <Stats />
+                        <Moods uid={uid} />
+                    </div>
                 </>
             ) : null}
         </div>

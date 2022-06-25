@@ -4,7 +4,6 @@ import { Doughnut } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import { getMoods } from "../utils";
 import { useSelector } from "react-redux";
-import Account from "../components/Account";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -13,31 +12,33 @@ export default function Stats() {
     const [data, setData] = useState([]);
     const uid = useSelector((state) => state.moods.uid);
 
+    function calcData(dataset) {
+        const moodsData = {
+            happy1: 0,
+            happy2: 0,
+            happy3: 0,
+            sad1: 0,
+            sad2: 0,
+            sad3: 0,
+            angry1: 0,
+            angry2: 0,
+            angry3: 0,
+        };
+        dataset.forEach((m) => {
+            moodsData[m.mood.toLowerCase()] = moodsData[m.mood.toLowerCase()]
+                ? moodsData[m.mood.toLowerCase()] + 1
+                : 1;
+        });
+        console.log(moodsData);
+        setData(moodsData);
+    }
+
     useEffect(() => {
         async function gMoods() {
             if (uid && !loaded) {
                 const moods_ = await getMoods(uid);
                 setLoaded(true);
-                const moodsData = {
-                    happy1: 0,
-                    happy2: 0,
-                    happy3: 0,
-                    sad1: 0,
-                    sad2: 0,
-                    sad3: 0,
-                    angry1: 0,
-                    angry2: 0,
-                    angry3: 0,
-                };
-                moods_.forEach((m) => {
-                    moodsData[m.mood.toLowerCase()] = moodsData[
-                        m.mood.toLowerCase()
-                    ]
-                        ? moodsData[m.mood.toLowerCase()] + 1
-                        : 1;
-                });
-                console.log(moodsData);
-                setData(moodsData);
+                calcData(moods_);
             }
         }
         gMoods();
@@ -69,6 +70,8 @@ export default function Stats() {
                     data.angry2,
                     data.angry3,
                 ],
+                offset: 20,
+                hoverBorderWidth: 5,
                 backgroundColor: [
                     "#6eff75",
                     "#46e84e",
@@ -82,20 +85,18 @@ export default function Stats() {
                 ],
             },
         ],
+        options: {
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            }
+        }
     };
 
     return (
-        <>
-            {uid ? (
-                <div className="stats">
-                    <Account />
-                    <div className="chart">
-                        <Doughnut data={chartData} />
-                    </div>
-                </div>
-            ) : (
-                <Account />
-            )}
-        </>
+        <div className="chart">
+            <Doughnut data={chartData} options={chartData.options} />
+        </div>
     );
 }
