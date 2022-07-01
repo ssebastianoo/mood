@@ -26,7 +26,7 @@ export default function Moods({ uid }) {
     }
 
     return (
-        <div className="moods-parent">
+        <div className="moods-parent mb-5">
             <div className="line"></div>
             <div className="moods">
                 {moods.map((mood, index) => (

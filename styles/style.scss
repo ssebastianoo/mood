@@ -1,6 +1,8 @@
 @use "_spinner";
-@import "_variables";
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html,
 body {
@@ -9,12 +11,30 @@ body {
 }
 
 body {
-    color: $foreground-color;
-    background-color: $background-color;
+    color: #edecee;
+    background-color: #15141b;
     font-family: "Inter", sans-serif;
 }
 
-.add-mood {
+.mood-child button {
+    text-shadow: 1px 1px 2px RGBA(0,0,0,0.7);
+}
+
+.mood-parent:nth-child(odd) {
+    .mood-child {
+        border-left: 1px solid white;
+        padding-left: 13px;
+    }
+}
+
+.mood-parent:nth-child(even) {
+    .mood-child {
+        border-right: 1px solid white;
+        padding-right: 13px;
+        text-align: right;
+    }
+}
+/* .add-mood {
     margin-top: 100px;
 }
 
@@ -173,4 +193,4 @@ body {
 
 .chart {
     width: 400px;
-}
+} */

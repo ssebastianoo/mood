@@ -18,6 +18,6 @@ export default function DeleteMood({ id }) {
     }
 
     return (
-        <button onClick={handleClick}>delete</button>
+        <button onClick={handleClick} className="bg-red w-[70px] h-7 rounded-md">Delete</button>
     )
 }

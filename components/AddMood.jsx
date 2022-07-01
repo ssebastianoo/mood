@@ -64,6 +64,7 @@ export default function AddMood() {
     const [reason, setReason] = useState(null);
     const [loading, setLoading] = useState(false);
     const [category, setCategory] = useState(null);
+    const [opened, setOpened] = useState(false);
 
     const dispatch = useDispatch();
     const uid = useSelector((state) => state.moods.uid);
@@ -111,47 +112,64 @@ export default function AddMood() {
     } else {
         return (
             <div className="add-mood">
-                <h3>How are you feeling today?</h3>
-                <div className="mood-levels">
-                    {category != null ? (
-                        <>
-                            <button onClick={() => setCategory(null)}>change category</button>
-                            {moodLevels[category].moods.map((mood, index) => (
-                                <div
-                                    onClick={() => {
-                                        setSelectedMood(mood.id);
-                                    }}
-                                    className={
-                                        "mood-level" +
-                                        (selectedMood === mood.id
-                                            ? " selected"
-                                            : "")
-                                    }
-                                    key={index}
-                                >
-                                    <p>{mood.label}</p>
-                                </div>
-                            ))}
-                        </>
-                    ) : (
-                        moodLevels.map((category, index) => {
-                            return (
-                                <div className="category-mood" key={index}>
-                                    <p>{category.label}</p>
-                                    <img
-                                        src={
-                                            "/mood-levels/" +
-                                            category.moods[1].id +
-                                            ".png"
-                                        }
-                                        onClick={() => setCategory(index)}
-                                        alt={category.label}
-                                    />
-                                </div>
-                            );
-                        })
-                    )}
-                    {/* moodLevels.map((mood, index) => {
+                {!opened ? (
+                    <div className="w-full h-48 flex items-center justify-center">
+                        <button className="bg-gradient-to-r from-purple-light to-turquoise text-3xl p-3 rounded-lg shadow-3xl w-60">Add Mood</button>
+                    </div>
+                ) : (
+                    <>
+                        {" "}
+                        <h3>How are you feeling today?</h3>
+                        <div className="mood-levels">
+                            {category != null ? (
+                                <>
+                                    <button onClick={() => setCategory(null)}>
+                                        change category
+                                    </button>
+                                    {moodLevels[category].moods.map(
+                                        (mood, index) => (
+                                            <div
+                                                onClick={() => {
+                                                    setSelectedMood(mood.id);
+                                                }}
+                                                className={
+                                                    "mood-level" +
+                                                    (selectedMood === mood.id
+                                                        ? " selected"
+                                                        : "")
+                                                }
+                                                key={index}
+                                            >
+                                                <p>{mood.label}</p>
+                                            </div>
+                                        )
+                                    )}
+                                </>
+                            ) : (
+                                moodLevels.map((category, index) => {
+                                    return (
+                                        <div
+                                            className="category-mood"
+                                            key={index}
+                                        >
+                                            <p>{category.label}</p>
+                                            <img
+                                                src={
+                                                    "/mood-levels/" +
+                                                    category.moods[1].id +
+                                                    ".png"
+                                                }
+                                                width="200"
+                                                onClick={() =>
+                                                    setCategory(index)
+                                                }
+                                                alt={category.label}
+                                            />
+                                        </div>
+                                    );
+                                })
+                            )}
+                            {/* moodLevels.map((mood, index) => {
                         return (
                             <div
                                 onClick={setMoodLevel}
@@ -167,18 +185,20 @@ export default function AddMood() {
                             </div>
                         );
                     }) */}
-                </div>
-                <input
-                    onKeyDown={check}
-                    onChange={(e) => {
-                        setReason(e.target.value);
-                    }}
-                    className="w-40 text-black"
-                    type="text"
-                    placeholder="Reason"
-                    id="reason"
-                />
-                <button onClick={sendData}>Enter</button>
+                        </div>
+                        <input
+                            onKeyDown={check}
+                            onChange={(e) => {
+                                setReason(e.target.value);
+                            }}
+                            className="w-40 text-black"
+                            type="text"
+                            placeholder="Reason"
+                            id="reason"
+                        />
+                        <button onClick={sendData}>Enter</button>
+                    </>
+                )}
             </div>
         );
     }

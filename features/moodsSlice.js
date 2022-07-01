@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     value: [],
     uid: null,
+    username: null
 };
 
 export const moodsSlice = createSlice({
@@ -10,7 +11,8 @@ export const moodsSlice = createSlice({
     initialState,
     reducers: {
         setUid: (state, action) => {
-            state.uid = action.payload;
+            state.uid = action.payload.uid;
+            state.username = action.payload.username;
         },
         setMoods: (state, action) => {
             state.value = action.payload;

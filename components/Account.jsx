@@ -18,7 +18,12 @@ export default function Account() {
     useEffect(() => {
         if (localStorage.getItem("username") && localStorage.getItem("uid")) {
             setUsername(localStorage.getItem("username"));
-            dispatch(setUid(localStorage.getItem("uid")));
+            dispatch(
+                setUid({
+                    uid: localStorage.getItem("uid"),
+                    username: localStorage.getItem("username"),
+                })
+            );
         }
     });
 
@@ -27,7 +32,9 @@ export default function Account() {
             signInWithPopup(auth, provider)
                 .then((result) => {
                     const user = result.user;
-                    dispatch(setUid(user.uid));
+                    dispatch(
+                        setUid({ uid: user.uid, username: user.displayName })
+                    );
                     setUsername(user.displayName);
                     localStorage.setItem("uid", user.uid);
                     localStorage.setItem("username", user.displayName);
@@ -40,24 +47,13 @@ export default function Account() {
     }
 
     function login() {
-        /* console.log(checkCookies("token"));
-        if (checkCookies("token")) {
-            const credential = GoogleAuthProvider.credential(getCookies("token"));
-            signInWithCredential(auth, credential).then((result) => {
-                console.log(result);
-            }).catch((err) => {
-                console.log(err);
-            })
-        } else {
-            googleLogin();
-        } */
         googleLogin();
     }
 
     function logout() {
         signOut(auth)
             .then(() => {
-                dispatch(setUid(null));
+                dispatch(setUid({ uid: null, username: null }));
                 setUsername(null);
                 localStorage.clear();
             })
@@ -69,18 +65,9 @@ export default function Account() {
     return (
         <>
             {!username ? (
-                <div className="login">
-                    <button onClick={login}>Login with Google</button>
-                </div>
+                <button onClick={login}>Login with Google</button>
             ) : (
-                <div className="account">
-                    <div className="item">
-                        <p>{username}</p>
-                    </div>
-                    <div className="item" onClick={logout}>
-                        <p>log out</p>
-                    </div>
-                </div>
+                <p>{username}</p>
             )}
         </>
     );

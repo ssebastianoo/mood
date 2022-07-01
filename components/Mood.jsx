@@ -44,10 +44,10 @@ export default function Mood({ mood }) {
     }
 
     return (
-        <div className="mood-parent">
-            <div className="mood">
-                {edit ? (
-                    <div className="mood-child edit">
+        <div className="mood-parent flex even:justify-end">
+            <div className="mx-8">
+                {/* {edit ? (
+                    <div className="mood-child max-w-[40vw]">
                         <p>{mood.timestamp}</p>
                         <form onSubmit={save}>
                             <select
@@ -80,18 +80,79 @@ export default function Mood({ mood }) {
                                 Cancel
                             </button>
                         </form>
-                    </div>
-                ) : (
-                    <div className="mood-child">
-                        <p className="timestamp">{mood.timestamp.split(' / ')[0]} <span className="slash">/</span> {mood.timestamp.split(' / ')[1]} <span className="slash">/</span> {mood.timestamp.split(' / ')[2]}</p>
-                        <h2 className="mood-title">{getMoodLabel(mood.mood)}</h2>
-                        <p className="reason">{mood.reason}</p>
-                        <button className="ml-2" onClick={showEdit}>
+                            </div> */}
+                <div className="mood-child max-w-[40vw]">
+                    <p className="text-purple text-sm">
+                        {mood.timestamp.split(" / ")[0]}{" "}
+                        <span className="text-red">/</span>{" "}
+                        {mood.timestamp.split(" / ")[1]}{" "}
+                        <span className="text-red">/</span>{" "}
+                        {mood.timestamp.split(" / ")[2]}
+                    </p>
+                    {edit ? (
+                        <>
+                            <form onSubmit={save}>
+                                <select
+                                    name="mood"
+                                    className="text-black"
+                                    defaultValue={mood.mood}
+                                >
+                                    {moodLevels.map((level, index) => {
+                                        return (
+                                            <option key={index} value={level}>
+                                                {getMoodLabel(level)}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                                <br />
+                                <input
+                                    className="text-black"
+                                    type="text"
+                                    value={moodInputReason}
+                                    placeholder={mood.reason}
+                                    name="reason"
+                                    onChange={(e) => {
+                                        setMoodInputReason(e.target.value);
+                                    }}
+                                />
+                                <br />
+                                <div className="flex items-center justify-between w-[150px] h-10">
+                                    <button className="bg-emerald-500 w-[70px] h-7 rounded-md bg">
+                                        Save
+                                    </button>
+                                    <button
+                                        onClick={cancel}
+                                        className="bg-red w-[70px] h-7 rounded-md"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </>
+                    ) : (
+                        <>
+                            <h2 className="text-yellow text-xl">
+                                {getMoodLabel(mood.mood)}
+                            </h2>
+                            <p className="break-all">{mood.reason}</p>
+                            <div className="flex items-center justify-between w-[150px] h-10">
+                                <button
+                                    onClick={showEdit}
+                                    className="bg-yellow w-[70px] h-7 rounded-md"
+                                >
+                                    Edit
+                                </button>
+                                {/* <button className="bg-red w-[70px] h-7 rounded-md">Delete</button> */}
+                                <DeleteMood id={mood.id} />
+                            </div>
+                        </>
+                    )}
+                    {/* <button className="ml-2" onClick={showEdit}>
                             edit
                         </button>
-                        <DeleteMood id={mood.id} />
-                    </div>
-                )}
+                        <DeleteMood id={mood.id} /> */}
+                </div>
             </div>
         </div>
     );
