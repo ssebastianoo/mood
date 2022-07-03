@@ -5,15 +5,14 @@ import { useSelector } from "react-redux";
 
 export default function Home() {
     const uid = useSelector((state) => state.moods.uid);
+    const addingMood = useSelector((state) => state.moods.addingMood);
 
     return (
         <div>
             {uid ? (
                 <>
                     <AddMood uid={uid} />
-                    <div className="sections">
-                        <Moods uid={uid} />
-                    </div>
+                    {!addingMood ? <Moods uid={uid} /> : null}
                 </>
             ) : null}
         </div>

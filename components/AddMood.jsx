@@ -4,70 +4,52 @@ import { useState } from "react";
 import Loading from "./Loading";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import { useDispatch, useSelector } from "react-redux";
-import { setMoods } from "../features/moodsSlice";
+import { setMoods, setAddingMood } from "../features/moodsSlice";
 
 export default function AddMood() {
     const moodLevels = [
         {
             label: "Happy",
+            image: "./mood-levels/Happy.png",
             moods: [
-                {
-                    id: "happy1",
-                    label: "Little Happy",
-                },
-                {
-                    id: "happy2",
-                    label: "Happy",
-                },
-                {
-                    id: "happy3",
-                    label: "Very Happy",
-                },
+                "happy1",
+                "happy2",
+                "happy3",
             ],
         },
         {
             label: "Sad",
+            image: "./mood-levels/Sad.png",
             moods: [
-                {
-                    id: "sad1",
-                    label: "Little Sad",
-                },
-                {
-                    id: "sad2",
-                    label: "Sad",
-                },
-                {
-                    id: "sad3",
-                    label: "Very Sad",
-                },
+                "sad1",
+                "sad2",
+                "sad3",
             ],
         },
         {
             label: "Angry",
+            image: "./mood-levels/Angry.png",
             moods: [
-                {
-                    id: "angry1",
-                    label: "Little Angry",
-                },
-                {
-                    id: "angry2",
-                    label: "Angry",
-                },
-                {
-                    id: "angry3",
-                    label: "Very Angry",
-                },
+                "angry1",
+                "angry2",
+                "angry3",
             ],
         },
     ];
+
+    const labels = [
+        "Just a little", "Normally", "A lot"
+    ]
+
     const [selectedMood, setSelectedMood] = useState(null);
     const [reason, setReason] = useState(null);
     const [loading, setLoading] = useState(false);
     const [category, setCategory] = useState(null);
-    const [opened, setOpened] = useState(false);
+    const [phase, setPhase] = useState(1);
 
     const dispatch = useDispatch();
     const uid = useSelector((state) => state.moods.uid);
+    const addingMood = useSelector((state) => state.moods.addingMood);
 
     async function sendData() {
         if (!selectedMood) {
@@ -81,7 +63,9 @@ export default function AddMood() {
             uid: uid,
         };
 
+        setPhase(1);
         setSelectedMood(null);
+        dispatch(setAddingMood(false));
         document.getElementById("reason").value = "";
         setLoading(true);
 
@@ -107,97 +91,133 @@ export default function AddMood() {
         sendData();
     }
 
+    function Back() {
+        return (
+            <div className="w-[90%]">
+                <button
+                    onClick={() => {
+                        if (phase === 1) {
+                            dispatch(setAddingMood(false));
+                        } else {
+                            setPhase(phase - 1);
+                        }
+                    }}
+                >
+                    back
+                </button>
+            </div>
+        );
+    }
+
+    function Title() {
+        switch (phase) {
+            case 1:
+                return <h3>How are you feeling today?</h3>;
+            case 2:
+                return <h3>How much?</h3>
+            case 3:
+                return <h3>Why?</h3>
+        }
+    }
+
     if (loading) {
         return <Loading />;
     } else {
         return (
             <div className="add-mood">
-                {!opened ? (
+                {!addingMood ? (
                     <div className="w-full h-48 flex items-center justify-center">
-                        <button className="bg-gradient-to-r from-purple-light to-turquoise text-3xl p-3 rounded-lg shadow-3xl w-60">Add Mood</button>
+                        <button
+                            onClick={() => dispatch(setAddingMood(true))}
+                            className="bg-gradient-to-r from-purple-light to-turquoise text-3xl p-3 rounded-lg shadow-3xl w-60"
+                        >
+                            Add Mood
+                        </button>
                     </div>
                 ) : (
-                    <>
-                        {" "}
-                        <h3>How are you feeling today?</h3>
-                        <div className="mood-levels">
-                            {category != null ? (
-                                <>
-                                    <button onClick={() => setCategory(null)}>
-                                        change category
-                                    </button>
-                                    {moodLevels[category].moods.map(
-                                        (mood, index) => (
+                    <div className="flex items-center justify-center h-[92vh]">
+                        <div className="bg-gradient-to-r from-purple-light to-turquoise rounded-lg shadow-3xl w-[80vw] h-[90%]">
+                            <div className="h-[15%] p-2">
+                                <div className="flex h-[30%]">
+                                    <Back />
+                                </div>
+                                <div className="flex items-center justify-center h-[70%]">
+                                   <Title />
+                                </div>
+                            </div>
+                            {phase === 1 ? (
+                                <div className="flex items-center justify-between flex-col h-[85%] p-5">
+                                    {moodLevels.map((category, index) => {
+                                        return (
                                             <div
-                                                onClick={() => {
-                                                    setSelectedMood(mood.id);
-                                                }}
-                                                className={
-                                                    "mood-level" +
-                                                    (selectedMood === mood.id
-                                                        ? " selected"
-                                                        : "")
-                                                }
+                                                className="category-mood"
                                                 key={index}
                                             >
-                                                <p>{mood.label}</p>
+                                                <img
+                                                    src={category.image}
+                                                    width="150"
+                                                    onClick={() => {
+                                                        setCategory(index);
+                                                        setPhase(phase + 1);
+                                                    }}
+                                                    alt={category.label}
+                                                />
                                             </div>
-                                        )
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                <>
+                                    {phase === 2 ? (
+                                        <div className="flex items-center justify-center gap-20 flex-col h-[85%] p-5">
+                                            {moodLevels[category].moods.map(
+                                                (mood, index) => (
+                                                    <div
+                                                        onClick={() => {
+                                                            {
+                                                                setSelectedMood(
+                                                                    mood
+                                                                );
+                                                                setPhase(
+                                                                    phase + 1
+                                                                );
+                                                            }
+                                                        }}
+                                                        className={
+                                                            "mood-level" +
+                                                            (selectedMood ===
+                                                            mood
+                                                                ? " selected"
+                                                                : "")
+                                                        }
+                                                        key={index}
+                                                    >
+                                                        <p className="bg-red p-2 rounded-md ">{labels[index]}</p>
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <input
+                                                onKeyDown={check}
+                                                onChange={(e) => {
+                                                    setReason(e.target.value);
+                                                }}
+                                                className="w-40 text-black"
+                                                type="text"
+                                                placeholder="Reason"
+                                                id="reason"
+                                            />
+                                            <button onClick={sendData}>
+                                                Enter
+                                            </button>
+                                        </>
                                     )}
                                 </>
-                            ) : (
-                                moodLevels.map((category, index) => {
-                                    return (
-                                        <div
-                                            className="category-mood"
-                                            key={index}
-                                        >
-                                            <p>{category.label}</p>
-                                            <img
-                                                src={
-                                                    "/mood-levels/" +
-                                                    category.moods[1].id +
-                                                    ".png"
-                                                }
-                                                width="200"
-                                                onClick={() =>
-                                                    setCategory(index)
-                                                }
-                                                alt={category.label}
-                                            />
-                                        </div>
-                                    );
-                                })
                             )}
-                            {/* moodLevels.map((mood, index) => {
-                        return (
-                            <div
-                                onClick={setMoodLevel}
-                                className={
-                                    "mood-level" +
-                                    (selectedMood === mood
-                                        ? " selected"
-                                        : "")
-                                }
-                                key={index}
-                            >
-                                <p>{mood}</p>
-                            </div>
-                        );
-                    }) */}
                         </div>
-                        <input
-                            onKeyDown={check}
-                            onChange={(e) => {
-                                setReason(e.target.value);
-                            }}
-                            className="w-40 text-black"
-                            type="text"
-                            placeholder="Reason"
-                            id="reason"
-                        />
-                        <button onClick={sendData}>Enter</button>
-                    </>
+                    </div>
                 )}
             </div>
         );

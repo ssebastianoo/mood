@@ -3,13 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     value: [],
     uid: null,
-    username: null
+    username: null,
+    addingMood: false,
 };
 
 export const moodsSlice = createSlice({
     name: "moods",
     initialState,
     reducers: {
+        setAddingMood: (state, action) => {
+            state.addingMood = action.payload;
+        },
         setUid: (state, action) => {
             state.uid = action.payload.uid;
             state.username = action.payload.username;
@@ -36,5 +40,5 @@ export const moodsSlice = createSlice({
     },
 });
 
-export const { setMoods, addMood, removeMood, editMood, setUid } = moodsSlice.actions;
+export const { setMoods, addMood, removeMood, editMood, setUid, setAddingMood } = moodsSlice.actions;
 export default moodsSlice.reducer;
