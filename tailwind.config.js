@@ -10,6 +10,7 @@ module.exports = {
     },
     extend: {
       boxShadow: {
+        'solid': '4px 4px 10px black',
         '3xl': '4px 4px 4px rgba(0, 0, 0, 0.5)',
       },
       transitionDuration: {

@@ -192,27 +192,27 @@ export default function AddMood() {
                                                         }
                                                         key={index}
                                                     >
-                                                        <p className="bg-red p-2 rounded-md ">{labels[index]}</p>
+                                                        <button className="bg-red p-2 rounded-md">{labels[index]}</button>
                                                     </div>
                                                 )
                                             )}
                                         </div>
                                     ) : (
-                                        <>
-                                            <input
+                                        <div className="w-full flex justify-center items-center flex-col">
+                                            <textarea
                                                 onKeyDown={check}
                                                 onChange={(e) => {
                                                     setReason(e.target.value);
                                                 }}
-                                                className="w-40 text-black"
+                                                className="w-[90%] h-[200px] text-white bg-[rgba(0,0,0,0.5)] rounded-md p-2 mb-5 outline-none shadow-solid"
                                                 type="text"
                                                 placeholder="Reason"
                                                 id="reason"
                                             />
-                                            <button onClick={sendData}>
+                                            <button onClick={sendData} className="w-[90%] bg-red p-2 rounded-md shadow-3xl">
                                                 Enter
                                             </button>
-                                        </>
+                                        </div>
                                     )}
                                 </>
                             )}
