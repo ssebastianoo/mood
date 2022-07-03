@@ -1,6 +1,7 @@
 import {
     GoogleAuthProvider,
     signInWithPopup,
+    signInWithCredential,
     setPersistence,
     browserLocalPersistence,
     signOut,
@@ -8,7 +9,7 @@ import {
 import { auth } from "../firebase";
 import { useState, useEffect } from "react";
 import { setUid } from "../features/moodsSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Account() {
     const provider = new GoogleAuthProvider();
@@ -16,14 +17,8 @@ export default function Account() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (localStorage.getItem("username") && localStorage.getItem("uid")) {
-            setUsername(localStorage.getItem("username"));
-            dispatch(
-                setUid({
-                    uid: localStorage.getItem("uid"),
-                    username: localStorage.getItem("username"),
-                })
-            );
+        if (localStorage.getItem("idToken")) {
+            autoLogin();
         }
     });
 
@@ -32,12 +27,13 @@ export default function Account() {
             signInWithPopup(auth, provider)
                 .then((result) => {
                     const user = result.user;
+                    const credential =
+                        GoogleAuthProvider.credentialFromResult(result);
+                    localStorage.setItem("idToken", credential.idToken);
                     dispatch(
                         setUid({ uid: user.uid, username: user.displayName })
                     );
                     setUsername(user.displayName);
-                    localStorage.setItem("uid", user.uid);
-                    localStorage.setItem("username", user.displayName);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -46,8 +42,26 @@ export default function Account() {
         });
     }
 
+    function autoLogin() {
+        const idToken = localStorage.getItem("idToken");
+        const credential = GoogleAuthProvider.credential(idToken);
+        signInWithCredential(auth, credential)
+            .then(async (result) => {
+                const user = result.user;
+                dispatch(
+                    setUid({ uid: user.uid, username: user.displayName })
+                );
+                setUsername(user.displayName);
+            })
+            .catch(() => {
+                localStorage.removeItem("idToken");
+            });
+    }
+
     function login() {
-        googleLogin();
+        const idToken = localStorage.getItem("idToken");
+        if (!idToken) return googleLogin();
+        autoLogin();
     }
 
     function logout() {
