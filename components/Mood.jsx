@@ -46,41 +46,6 @@ export default function Mood({ mood }) {
     return (
         <div className="mood-parent flex even:justify-end">
             <div className="mx-8">
-                {/* {edit ? (
-                    <div className="mood-child max-w-[40vw]">
-                        <p>{mood.timestamp}</p>
-                        <form onSubmit={save}>
-                            <select
-                                name="mood"
-                                className="text-black"
-                                defaultValue={mood.mood}
-                            >
-                                {moodLevels.map((level, index) => {
-                                    return (
-                                        <option key={index} value={level}>
-                                            {getMoodLabel(level)}
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                            <br />
-                            <input
-                                className="text-black"
-                                type="text"
-                                value={moodInputReason}
-                                placeholder={mood.reason}
-                                name="reason"
-                                onChange={(e) => {
-                                    setMoodInputReason(e.target.value);
-                                }}
-                            />
-                            <br />
-                            <button>Save</button>
-                            <button onClick={cancel} className="ml-2">
-                                Cancel
-                            </button>
-                        </form>
-                            </div> */}
                 <div className="mood-child max-w-[40vw]">
                     <p className="text-purple text-sm">
                         {mood.timestamp.split(" / ")[0]}{" "}
@@ -94,7 +59,7 @@ export default function Mood({ mood }) {
                             <form onSubmit={save}>
                                 <select
                                     name="mood"
-                                    className="text-black"
+                                    className="bg-[rgba(0,0,0,0.5)] p-1 rounded-md shadow-solid w-full my-3"
                                     defaultValue={mood.mood}
                                 >
                                     {moodLevels.map((level, index) => {
@@ -105,9 +70,8 @@ export default function Mood({ mood }) {
                                         );
                                     })}
                                 </select>
-                                <br />
-                                <input
-                                    className="text-black"
+                                <textarea
+                                    className="bg-[rgba(0,0,0,0.5)] rounded-md px-2 outline-none w-full shadow-solid mb-3"
                                     type="text"
                                     value={moodInputReason}
                                     placeholder={mood.reason}
@@ -116,7 +80,6 @@ export default function Mood({ mood }) {
                                         setMoodInputReason(e.target.value);
                                     }}
                                 />
-                                <br />
                                 <div className="flex items-center justify-between w-[150px] h-10">
                                     <button className="bg-emerald-500 w-[70px] h-7 rounded-md bg">
                                         Save

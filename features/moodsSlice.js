@@ -5,6 +5,7 @@ const initialState = {
     uid: null,
     username: null,
     addingMood: false,
+    noMoods: true,
 };
 
 export const moodsSlice = createSlice({

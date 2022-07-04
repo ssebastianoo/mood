@@ -32,6 +32,12 @@ body {
         border-right: 1px solid white;
         padding-right: 13px;
         text-align: right;
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
     }
 }
 /* .add-mood {

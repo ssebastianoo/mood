@@ -161,6 +161,7 @@ export default function AddMood() {
                                                         setPhase(phase + 1);
                                                     }}
                                                     alt={category.label}
+                                                    className="cursor-pointer"
                                                 />
                                             </div>
                                         );
