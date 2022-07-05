@@ -11,35 +11,21 @@ export default function AddMood() {
         {
             label: "Happy",
             image: "./mood-levels/Happy.png",
-            moods: [
-                "happy1",
-                "happy2",
-                "happy3",
-            ],
+            moods: ["happy1", "happy2", "happy3"],
         },
         {
             label: "Sad",
             image: "./mood-levels/Sad.png",
-            moods: [
-                "sad1",
-                "sad2",
-                "sad3",
-            ],
+            moods: ["sad1", "sad2", "sad3"],
         },
         {
             label: "Angry",
             image: "./mood-levels/Angry.png",
-            moods: [
-                "angry1",
-                "angry2",
-                "angry3",
-            ],
+            moods: ["angry1", "angry2", "angry3"],
         },
     ];
 
-    const labels = [
-        "Just a little", "Normally", "A lot"
-    ]
+    const labels = ["Just a little", "Normally", "A lot"];
 
     const [selectedMood, setSelectedMood] = useState(null);
     const [reason, setReason] = useState(null);
@@ -81,14 +67,11 @@ export default function AddMood() {
     }
 
     function check(e) {
-        if (e.code) {
-            if (e.code != "Enter") return;
+        if (e.code && e.code == "Enter") {
+            if (!selectedMood) return alert("Select a mood!");
+            if (reason.trim() === "") setReason(null);
+            sendData();
         }
-
-        if (!selectedMood) return alert("Select a mood!");
-        if (reason.trim() === "") setReason(null);
-
-        sendData();
     }
 
     function Back() {
@@ -114,9 +97,9 @@ export default function AddMood() {
             case 1:
                 return <h3>How are you feeling today?</h3>;
             case 2:
-                return <h3>How much?</h3>
+                return <h3>How much?</h3>;
             case 3:
-                return <h3>Why?</h3>
+                return <h3>Why?</h3>;
         }
     }
 
@@ -142,7 +125,7 @@ export default function AddMood() {
                                     <Back />
                                 </div>
                                 <div className="flex items-center justify-center h-[70%]">
-                                   <Title />
+                                    <Title />
                                 </div>
                             </div>
                             {phase === 1 ? (
@@ -193,7 +176,9 @@ export default function AddMood() {
                                                         }
                                                         key={index}
                                                     >
-                                                        <button className="bg-red p-2 rounded-md">{labels[index]}</button>
+                                                        <button className="bg-red p-2 rounded-md">
+                                                            {labels[index]}
+                                                        </button>
                                                     </div>
                                                 )
                                             )}
@@ -210,7 +195,10 @@ export default function AddMood() {
                                                 placeholder="Reason"
                                                 id="reason"
                                             />
-                                            <button onClick={sendData} className="w-[90%] bg-red p-2 rounded-md shadow-3xl">
+                                            <button
+                                                onClick={sendData}
+                                                className="w-[90%] bg-red p-2 rounded-md shadow-3xl"
+                                            >
                                                 Enter
                                             </button>
                                         </div>
