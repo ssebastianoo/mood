@@ -36,8 +36,8 @@ export default function Moods({ uid }) {
     }
 
     return (
-        <div className="moods-parent mb-5">
-            <div className="moods">
+        <div className="moods-parent mb-5 flex justify-center">
+            <div className="moods w-full max-w-[700px]">
                 {moods.map((mood, index) => (
                     <Mood
                         key={index}

@@ -119,7 +119,7 @@ export default function AddMood() {
                     </div>
                 ) : (
                     <div className="flex items-center justify-center h-[92vh]">
-                        <div className="bg-gradient-to-r from-purple-light to-turquoise rounded-lg shadow-3xl w-[80vw] h-[90%]">
+                        <div className="bg-gradient-to-r from-purple-light to-turquoise rounded-lg shadow-3xl w-[80vw] h-[90%] max-w-[500px]">
                             <div className="h-[15%] p-2">
                                 <div className="flex h-[30%]">
                                     <Back />
